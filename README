@@ -1,0 +1,57 @@
+
+
+DNA Triangulation: Genome scaffolding from in vivo DNA interaction frequency 
+----------------------------------------------------------------------------
+
+All code was written by Noam Kaplan, University of Massachusetts Medical School, 2013
+
+For further information contact noam.kaplan2@gmail.com
+
+This project is maintained as a github repository at: http://github.com/NoamKaplan/dna-triangulation/
+
+1. Files:
+
+Makefile (containing examples of how to run the code)
+triangulation.py (library containing core functions)
+augmentation_chr_pred.py (scaffold augmentation chromosome prediction)
+augmentation_locus_pred.py (scaffold augmentation locus prediction)
+karyotype.py (de novo karyotyping)
+scaffold_chr.py (de novo chromosome scaffolding)
+contig_positions.tab (data file containing hg19-mapped positions of Allpaths-LG/GAGE contigs, see Makefile)
+README
+
+2. Requirements:
+
+Code was written in Python 2.7.2 on a 64-bit Linux operating system.
+The following external Python modules are required: numpy, scipy, scikit-learn.
+
+3. Design notes:
+
+Code was designed such that all triangulation algorithms (augmentation+de novo) are contained in the triangulation.py module,
+in addition to some helper functions. Each of the other scripts is executable and interfaces with this module.
+Scripts that perform heavy computations have been designed so they can be run in a distributed form either as multiple
+processes on a single machine or multiple processes on multiple machines.
+Note that some scripts currently require loading large matrices into RAM.
+karyotype.py and scaffold_chr.py use randomizations, but utilize seeds for reproducible results.
+
+4. License and citation:
+
+This software is free for non-commercial use. For commercial use, please contact author.
+The software may be modified and distributed.
+
+If you find this software useful, please cite:
+
+High-throughput genome scaffolding from in vivo DNA interaction frequency
+Noam Kaplan and Job Dekker
+Nature Biotechnology, 2013
+doi:10.1038/nbt.2768
+
+5. Disclaimer:
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
