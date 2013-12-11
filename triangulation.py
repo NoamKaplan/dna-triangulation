@@ -1,4 +1,3 @@
-
 import sys
 import numpy as np
 import scipy as sp
@@ -489,21 +488,16 @@ def assemble_chromosome(d,pnum=1,iterations=1,shuffle=True,shuffle_seed=None,ini
 
  
     for i in range(iterations):
-
-        parameters_dict={'fun':_assemble_chromosome_Q,'x0':x0[i,:],'args':(d,approx_grad),'bounds':[(None,0)]+[(0,max_x)]*n,'method':'L-BFGS-B','jac':not approx_grad,
-                         'options':{
-                             'ftol':lbfgs_factr,'gtol':lbfgs_pgtol
-                         }
-                         }
+        parameters_dict={'func':_assemble_chromosome_Q,'x0':x0[i,:],'args':(d,False),'approx_grad':False,'factr':lbfgs_factr,'pgtol':lbfgs_pgtol,'bounds':[(None,0)]+[(0,max_x)]*n}
             
         if pnum>1:
             
-            jobs.append(pool.apply_async(sp.optimize.minimize,kwds=parameters_dict))
+            jobs.append(pool.apply_async(sp.optimize.fmin_l_bfgs_b,kwds=parameters_dict))
             
         else:
             if (lbfgs_show):
-                parameters_dict['options']['disp']=True
-            res.append(sp.optimize.minimize(**parameters_dict))
+                parameters_dict['iprint']=3
+            res.append(sp.optimize.fmin_l_bfgs_b(**parameters_dict))
     
         sys.stderr.write('optimization '+str(i+1)+'/'+str(iterations)+' started.\n')
 
@@ -518,11 +512,11 @@ def assemble_chromosome(d,pnum=1,iterations=1,shuffle=True,shuffle_seed=None,ini
     sys.stderr.write('optimizations complete.\n')
 
 
-    sorted_i,sorted_results = zip(*sorted(enumerate(res),key=lambda x: x[1]['fun']))
+    sorted_i,sorted_results = zip(*sorted(enumerate(res),key=lambda x: x[1][1]))
     
-    fvals=np.array([i['fun'] for i in sorted_results])
-    scales=np.array([i['x'][0] for i in sorted_results])
-    pos=np.array([i['x'][1:] for i in sorted_results])
+    fvals=np.array([i[1] for i in sorted_results])
+    scales=np.array([i[0][0] for i in sorted_results])
+    pos=np.array([i[0][1:] for i in sorted_results])
     x0=x0[sorted_i,:]
     
     if shuffle:
