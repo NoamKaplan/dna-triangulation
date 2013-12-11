@@ -270,8 +270,7 @@ class AugmentationLocPredModel:
 
         sia=np.sum(interactions*abs_dists)
 
-        self.scale=sp.optimize.minimize(_ALP_fit_scale_Q,x0=-1e-3,args=(abs_dists,interactions,sia),bounds=[(None,0)],method='L-BFGS-B',jac=True)['x'][0]
-
+        self.scale=sp.optimize.fmin_l_bfgs_b(_ALP_fit_scale_Q,x0=-1e-3,args=(abs_dists,interactions,sia),bounds=[(None,0)],approx_grad=False)[0][0]
                                                                                                
     def estimate_position(self,positions,interactions,x0_iter):
         
@@ -302,19 +301,19 @@ class AugmentationLocPredModel:
 
         positions=positions/self.sfactor
             
-        best={'fun':np.inf,'x':[np.nan]}
+        best=[[np.nan],np.inf]
                 
         if interaction_sum>10:
                 
-            res=[sp.optimize.minimize(_ALP_fit_loc_Q,x0=x0/self.sfactor,args=(self.scale,positions,interactions),method='L-BFGS-B',jac=False) for x0 in x0_iter]
+            res=[sp.optimize.fmin_l_bfgs_b(_ALP_fit_loc_Q,x0=x0/self.sfactor,args=(self.scale,positions,interactions),approx_grad=True) for x0 in x0_iter]
 
             for i in res:
-                if i['fun']<best['fun']:
+                if i[1]<best[1]:
                     best=i
 
-            best['x'][0]=np.clip(best['x'][0],np.min(positions),np.max(positions))*self.sfactor
+            best[0][0]=np.clip(best[0][0],np.min(positions),np.max(positions))*self.sfactor
                         
-        return best['x'][0]
+        return best[0][0]
 
 
 class AugmentationChrPredModel:
