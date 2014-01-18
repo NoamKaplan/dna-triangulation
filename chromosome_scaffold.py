@@ -1,4 +1,3 @@
-
 import sys
 import numpy as np
 import triangulation
@@ -77,9 +76,11 @@ def main():
     sys.stderr.write("averaging contigs that share the same id...\n")
 
     d=triangulation.average_reduce_2d(d,bin_chr)
-    bin_chr=np.unique(bin_chr)
+    
     if realposfile!=None:
         realpos=triangulation.average_reduce(realpos,bin_chr)
+    
+    bin_chr=np.unique(bin_chr)
 
     sys.stderr.write(str(d.shape[0])+" contigs left.\n")
 
@@ -94,6 +95,7 @@ def main():
         rr=np.argsort(realpos)
         realpos=realpos[rr]
         d=d[rr,:][:,rr]
+        bin_chr=bin_chr[rr]
         shuffle=False
 
 
