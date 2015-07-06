@@ -16,7 +16,7 @@ def main():
     parser.add_argument('-out',help='prefix for output files',dest='outfile',type=str,required=True)
     parser.add_argument('-nchr',help='number of chromosomes/clusters. 0 will automatically estimate this number.',dest='nchr',type=int,default=0)
     parser.add_argument('-drop',help='leaves every nth bin in the data, ignoring the rest. 1 will use whole dataset.',dest='drop', type=int,default=1)
-    parser.add_argument('-ci',help='list of chromosomes/contigs to include. If empty, uses all chromosomes.',dest='included_chrs',nargs='+',type=str,default=['chr1', 'chr2', 'chr3', 'chr4', 'chr5', 'chr6', 'chr7', 'chr8','chr9', 'chr10', 'chr11', 'chr12', 'chr13', 'chr14', 'chr15','chr16', 'chr17', 'chr18', 'chr19', 'chr20', 'chr21', 'chr22','chrX'])
+    parser.add_argument('-ci',help='list of chromosomes/contigs to include. If empty, uses all chromosomes.',dest='included_chrs',nargs='*',type=str,default=['chr1', 'chr2', 'chr3', 'chr4', 'chr5', 'chr6', 'chr7', 'chr8','chr9', 'chr10', 'chr11', 'chr12', 'chr13', 'chr14', 'chr15','chr16', 'chr17', 'chr18', 'chr19', 'chr20', 'chr21', 'chr22','chrX'])
     parser.add_argument('-s',help='seed for randomizations',dest='seed',type=int,default=0)
     parser.add_argument('-f',help='fraction of data to use for average step length calculation',dest='rand_frac',type=float,default=0.8)
     parser.add_argument('-n',help='number of iterations for average step length calculation',dest='rand_n',type=int,default=20)
